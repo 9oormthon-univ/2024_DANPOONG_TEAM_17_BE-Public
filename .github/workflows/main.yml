@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Navigate to SpringBoot directory
-        working-directory: SpringBoot
+
+      - name: Print working directory
         run: pwd
 
       # 1. Set up JDK 17
@@ -26,7 +26,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set working directory to SpringBoot
+        working-directory: SpringBoot
+        run: pwd
+
       - name: Set Properties
+        working-directory: SpringBoot
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.properties
@@ -34,10 +39,12 @@ jobs:
 
       # 2. Build the Spring Boot application
       - name: Grant execute permission for gradlew
-        run: chmod +x SpringBoot/gradlew
+        working-directory: SpringBoot
+        run: chmod +x ./gradlew
 
       - name: Clean and Build with Gradle Wrapper
-        run: SpringBoot/gradlew bootJar
+        working-directory: SpringBoot
+        run: ./gradlew bootJar
 
       # 3. Get current time
       - name: Get current time
@@ -52,7 +59,7 @@ jobs:
 
       # 4. Docker image build
       - name: docker image build
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/munhwahansang_server:latest .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/munhwahansang_server:latest SpringBoot/.
 
       # 5. DockerHub login
       - name: docker login
