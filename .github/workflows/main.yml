@@ -16,7 +16,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Navigate to SpringBoot directory
-        run: cd SpringBoot
+        working-directory: SpringBoot
+        run: pwd
 
       # 1. Set up JDK 17
       - name: Set up JDK 17
