@@ -15,6 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Navigate to SpringBoot directory
+        run: cd SpringBoot
+
       # 1. Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -30,10 +33,10 @@ jobs:
 
       # 2. Build the Spring Boot application
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x SpringBoot/gradlew
 
       - name: Clean and Build with Gradle Wrapper
-        run: ./gradlew bootJar
+        run: SpringBoot/gradlew bootJar
 
       # 3. Get current time
       - name: Get current time
